@@ -32,6 +32,11 @@ pipeline {
         }
 
         stage('Test') {
+            agent {
+                // Use the same JDK 21 Maven image as the Dockerfile build stage so the
+                // Jenkins host's (possibly older) JDK is never used for compilation.
+                docker { image 'maven:3.9-eclipse-temurin-21-alpine' }
+            }
             steps {
                 // Runs the Maven test suite inside the build environment.
                 // -B (batch mode) suppresses interactive prompts so output is clean in logs.
